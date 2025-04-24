@@ -3,6 +3,7 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 const sendMail = require('../utils/sendMail');
 
+
 router.post('/book', async (req, res) => {
   try {
     const { childName, mobileNumber, email, state, class: studentClass, password } = req.body;
