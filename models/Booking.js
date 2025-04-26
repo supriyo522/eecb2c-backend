@@ -1,12 +1,87 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+
+// const bookingSchema = new mongoose.Schema({
+//   childName: String,
+//   mobileNumber: String,
+//   email: String,
+//   state: String,
+//   class: String,
+//   password: String,
+// }, { timestamps: true });
+
+// module.exports = mongoose.model('Booking', bookingSchema);
+
+// const mongoose = require("mongoose");
+
+// const bookingSchema = new mongoose.Schema({
+//   childName: {
+//     type: String,
+//     required: true,
+//   },
+//   mobileNumber: {
+//     type: String,
+//     required: true,
+//   },
+//   email: {
+//     type: String,
+//   },
+//   class: {
+//     type: String,
+//     required: true,
+//   },
+//   state: {
+//     type: String,
+//     required: true,
+//   },
+//   password: {
+//     type: String,
+//     required: true,
+//   },
+// });
+
+// module.exports = mongoose.model("Booking", bookingSchema);
+
+
+const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
-  childName: String,
-  mobileNumber: String,
-  email: String,
-  state: String,
-  class: String,
-  password: String,
-}, { timestamps: true });
+  childName: {
+    type: String,
+    required: true,
+  },
+  mobileNumber: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+  },
+  class: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
 
-module.exports = mongoose.model('Booking', bookingSchema);
+  // Profile fields
+  fullName: String,
+  dob: String,
+  schoolName: String,
+  classGrade: String,
+  rollNumber: String,
+  parentContact: String,
+  homeAddress: String,
+  subjects: String,
+  learningPreferences: String,
+  goals: String,
+});
+
+module.exports = mongoose.model("Booking", bookingSchema);
+
+
