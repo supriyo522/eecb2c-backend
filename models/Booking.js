@@ -80,6 +80,22 @@ const bookingSchema = new mongoose.Schema({
   subjects: String,
   learningPreferences: String,
   goals: String,
+
+unlockedLevels: {
+    basic: { type: Boolean, default: true },
+    intermediate: { type: Boolean, default: false },
+    advanced: { type: Boolean, default: false }
+  },
+  scores: {
+    basic: { type: Number, default: 0 },
+    intermediate: { type: Number, default: 0 },
+    advanced: { type: Number, default: 0 }
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);

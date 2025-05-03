@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const bookingRoutes = require('./routes/booking');
 const userRoutes = require('./routes/userRoutes');
+const quizRoutes = require("./routes/quiz");
 
 // Initialize Express app
 dotenv.config();
@@ -28,6 +29,8 @@ db.once('open', () => {
 // Use routes
 app.use('/api', bookingRoutes);
 app.use('/api', userRoutes);
+app.use("/api", quizRoutes);
+
 
 // Start the server
 const PORT = 3000;

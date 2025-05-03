@@ -1,25 +1,25 @@
-const sgMail = require('@sendgrid/mail');
-require('dotenv').config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const sgMail = require('@sendgrid/mail');
+// require('dotenv').config();
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendMail = async (email, password, objectId) => {
-  const msg = {
-    to: email,
-    from: 'backend@houseofmusa.com',
-    subject: 'Booking Confirmation',
-    html: `
-      <h3>Your Free Session Booking is Confirmed!</h3>
-      <p><strong>Object ID:</strong> ${objectId}</p>
-      <p><strong>Password:</strong> ${password}</p>
-    `
-  };
+// const sendMail = async (email, password, objectId) => {
+//   const msg = {
+//     to: email,
+//     from: 'backend@houseofmusa.com',
+//     subject: 'Booking Confirmation',
+//     html: `
+//       <h3>Your Free Session Booking is Confirmed!</h3>
+//       <p><strong>Object ID:</strong> ${objectId}</p>
+//       <p><strong>Password:</strong> ${password}</p>
+//     `
+//   };
 
-  try {
-    await sgMail.send(msg);
-    console.log(`Email sent to ${email}`);
-  } catch (error) {
-    console.error('SendGrid Error:', error.response?.body || error.message);
-  }
-};
+//   try {
+//     await sgMail.send(msg);
+//     console.log(`Email sent to ${email}`);
+//   } catch (error) {
+//     console.error('SendGrid Error:', error.response?.body || error.message);
+//   }
+// };
 
-module.exports = sendMail;
+// module.exports = sendMail;
