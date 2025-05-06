@@ -92,10 +92,20 @@ unlockedLevels: {
     advanced: { type: Number, default: 0 }
   },
 
+resetPasswordToken: {
+  type: String,
+},
+resetPasswordExpires: {
+  type: Date,
+},
+
+
   createdAt: {
     type: Date,
     default: Date.now,
   }
+
+  
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);

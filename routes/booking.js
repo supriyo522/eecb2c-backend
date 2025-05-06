@@ -131,6 +131,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const Booking = require("../models/Booking");
+const sendEmail = require('../utils/sendMail');
+const crypto = require("crypto");
 
 // @route   POST /api/book-session
 // @desc    Book a free session
@@ -197,6 +199,101 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Login failed", error: err.message });
   }
 });
+
+// router.post("/request-password-reset", async (req, res) => {
+//   const { email } = req.body;
+
+//   try {
+//     const user = await Booking.findOne({ email });
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found." });
+//     }
+
+//     const token = crypto.randomBytes(20).toString("hex");
+
+//     user.resetPasswordToken = token;
+//     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+//     await user.save();
+
+//     // In production, send via email. For now, return the reset link.
+//     const resetLink = `http://localhost:3000/api/reset-password/${token}`;
+
+//     res.status(200).json({
+//       message: "Password reset link generated.",
+//       resetLink,
+//     });
+//   } catch (err) {
+//     res.status(500).json({ message: "Error generating reset token", error: err.message });
+//   }
+// });
+
+
+router.post("/request-password-reset", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await Booking.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const token = crypto.randomBytes(20).toString("hex");
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    const resetLink = `http://localhost:3000/api/reset-password/${token}`;
+
+    const emailContent = `
+      <h2>Password Reset</h2>
+      <p>Hello ${user.childName},</p>
+      <p>You requested a password reset. Click below to reset your password:</p>
+      <a href="${resetLink}" target="_blank">${resetLink}</a>
+      <p>This link expires in 1 hour.</p>
+    `;
+
+    await sendEmail(user.email, "Password Reset Request", emailContent);
+
+    res.status(200).json({ message: "Password reset link sent to email." });
+  } catch (err) {
+    res.status(500).json({ message: "Error generating reset token", error: err.message });
+  }
+});
+
+
+router.post("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  const { password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: "Passwords do not match." });
+  }
+
+  try {
+    const user = await Booking.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful." });
+  } catch (err) {
+    res.status(500).json({ message: "Reset failed", error: err.message });
+  }
+});
+
 
 module.exports = router;
 
