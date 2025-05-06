@@ -244,7 +244,7 @@ router.post("/request-password-reset", async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const resetLink = `http://localhost:3000/api/reset-password/${token}`;
+    const resetLink = `https://eecb2c-backend.onrender.com/api/reset-password/${token}`;
 
     const emailContent = `
       <h2>Password Reset</h2>
