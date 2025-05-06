@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 
 const bookingRoutes = require('./routes/booking');
 const userRoutes = require('./routes/userRoutes');
@@ -13,6 +14,11 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+
+
+app.use(express.static("C:/Users/Backend Developer/Downloads/eecb2c/eecb2c/frontend"));
+console.log("Serving static files from:", path.join(__dirname, "frontend"));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://supriyonag552:ahy7BxxpZHAtslK7@cluster0.ldoppfe.mongodb.net/free-session-booking?retryWrites=true&w=majority&appName=Cluster0', {
