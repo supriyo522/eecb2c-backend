@@ -244,7 +244,7 @@ router.post("/request-password-reset", async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const resetLink = `https://eecb2c-backend.onrender.com/reset-password.html?token=${token}`;
+    const resetLink = `https://eecb2c-frontend.vercel.app/reset-password.html?token=${token}`;
 
     const emailContent = `
       <h2>Password Reset</h2>
