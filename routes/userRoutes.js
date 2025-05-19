@@ -77,9 +77,34 @@
 const express = require("express");
 const router = express.Router();
 const Booking = require("../models/Booking");
+const upload = require("../middleware/upload");
 
 // @route   POST /api/profile/update/:email
 // @desc    Update profile by email
+
+
+router.post("/upload-profile-image/:email", upload.single("profileImage"), async (req, res) => {
+  try {
+    const updatedUser = await Booking.findOneAndUpdate(
+      { email: req.params.email },
+      { profileImage: req.file.path },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile image uploaded successfully",
+      user: updatedUser
+    });
+  } catch (error) {
+    res.status(400).json({ message: "Image upload failed", error: error.message });
+  }
+});
+
+
 router.post("/profile/update/:email", async (req, res) => {
   try {
     const updatedUser = await Booking.findOneAndUpdate(
@@ -100,10 +125,27 @@ router.post("/profile/update/:email", async (req, res) => {
 
 // @route   GET /api/profile/view/:email
 // @desc    View user profile by email
+// router.get("/profile/view/:email", async (req, res) => {
+//   try {
+//     const user = await Booking.findOne({ email: req.params.email });
+//     if (!user) return res.status(404).json({ message: "User not found" });
+//     res.json(user);
+//   } catch (error) {
+//     res.status(400).json({ message: "Error fetching profile", error: error.message });
+//   }
+// });
+
 router.get("/profile/view/:email", async (req, res) => {
   try {
     const user = await Booking.findOne({ email: req.params.email });
     if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Prepend full URL to profileImage if it exists
+    const host = req.protocol + '://' + req.get('host');
+    if (user.profileImage) {
+      user.profileImage = `${host}/${user.profileImage}`;
+    }
+
     res.json(user);
   } catch (error) {
     res.status(400).json({ message: "Error fetching profile", error: error.message });

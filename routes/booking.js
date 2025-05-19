@@ -152,6 +152,12 @@ router.post("/book-session", async (req, res) => {
   }
 
   try {
+
+    const existingUser = await Booking.findOne({ email: email.toLowerCase().trim() });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists." });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newBooking = new Booking({
@@ -223,8 +229,7 @@ router.post("/login", async (req, res) => {
 //       message: "Password reset link generated.",
 //       resetLink,
 //     });
-//   } catch (err) {
-//     res.status(500).json({ message: "Error generating reset token", error: err.message });
+//   } catch (err) {  json({ message: "Error generating reset token", error: err.message });
 //   }
 // });
 

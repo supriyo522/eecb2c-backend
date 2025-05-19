@@ -20,6 +20,9 @@ app.use(cors());
 app.use(express.static("C:/Users/Backend Developer/Downloads/eecb2c/eecb2c/frontend"));
 console.log("Serving static files from:", path.join(__dirname, "frontend"));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://supriyonag552:ahy7BxxpZHAtslK7@cluster0.ldoppfe.mongodb.net/free-session-booking?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,

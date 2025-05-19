@@ -55,6 +55,10 @@ const bookingSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
+  required: true,
+  lowercase: true, // Normalize email casing
+  trim: true
   },
   class: {
     type: String,
@@ -70,10 +74,12 @@ const bookingSchema = new mongoose.Schema({
   },
 
   // Profile fields
+
+  profileImage: { type: String, default: "" },
   fullName: String,
   dob: String,
   schoolName: String,
-  classGrade: String,
+  // classGrade: String,
   rollNumber: String,
   parentContact: String,
   homeAddress: String,
