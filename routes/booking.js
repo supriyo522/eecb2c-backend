@@ -153,10 +153,10 @@ router.post("/book-session", async (req, res) => {
 
   try {
 
-    const existingUser = await Booking.findOne({ email: email.toLowerCase().trim() });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already exists." });
-    }
+    // const existingUser = await Booking.findOne({ email: email.toLowerCase().trim() });
+    // if (existingUser) {
+    //   return res.status(400).json({ message: "Email already exists." });
+    // }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
