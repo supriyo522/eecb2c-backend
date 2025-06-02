@@ -55,10 +55,10 @@ const bookingSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
-  required: true,
-  lowercase: true, // Normalize email casing
-  trim: true
+  //   unique: true,
+  // required: true,
+  // lowercase: true,
+  // trim: true
   },
   class: {
     type: String,
